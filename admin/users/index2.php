@@ -50,8 +50,8 @@
                               <td><a href="show.php?id=<?= $user['id']; ?>">Show</a>
                               | <a href="edit.php?id=<?= $user['id']; ?>">Edit</a>
                               | <a href="accept.php?id=<?= $user['id']; ?>">Accept</a>
-                              | <a href="delete.php?id=<?= $user['id']; ?>"
-                              onclick="return confirm('Are you sure you want to delete?')">Delete</a></td>
+                              | <a href="reject.php?id=<?= $user['id']; ?>"
+                              onclick="return confirm('Are you sure you want to reject?')">Reject</a></td>
                             </tr>
                         <?php
                             endforeach;
