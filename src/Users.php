@@ -56,23 +56,7 @@
 
             return $_users;
         }
-
-        public function getActiveUsers()
-        {
-            //Connection to database
-            $_startfrom = 0;
-            $_total = 3;
-
-            $query = "SELECT * FROM `users` WHERE is_active=1 LIMIT $_startfrom$_total";
-             
-            $stmt = $this->conn->prepare($query);
-            $result = $stmt->execute();
- 
-            $users = $stmt->fetchAll();
- 
-            return $users;
-        }
-     
+        
         public function store()
         {
             $webroot = "http://localhost/php_project/";
