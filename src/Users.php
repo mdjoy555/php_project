@@ -35,7 +35,19 @@
 
         public function index2()
         {
-            $query = "SELECT * FROM `users` WHERE status=0";
+            $query = "SELECT * FROM `users` WHERE status=0 AND is_rejected=0";
+            
+            $stmt = $this->conn->prepare($query);
+            $result = $stmt->execute();
+
+            $_users = $stmt->fetchAll();
+
+            return $_users;
+        }
+
+        public function reject_index()
+        {
+            $query = "SELECT * FROM `users` WHERE is_rejected=1";
             
             $stmt = $this->conn->prepare($query);
             $result = $stmt->execute();
@@ -61,8 +73,9 @@
             return $users;
         }
      
-        public function store(){
-            $approot = $_SERVER['DOCUMENT_ROOT']."/php_project/";
+        public function store()
+        {
+            $webroot = "http://localhost/php_project/";
             $_user_name = $_POST['name'];
             $_email = $_POST['email'];
             $_password = $_POST['password'];
@@ -84,7 +97,7 @@
                 $_SESSION['message'] = "User is not added";
             }
 
-            header("location:index.php");
+            header("location:".$webroot."admin/users/index.php");
         }
 
         public function show(){    
@@ -118,8 +131,7 @@
 
         public function update()
         {
-            $approot = $_SERVER['DOCUMENT_ROOT']."/php_project/";
-            
+            $webroot = "http://localhost/php_project/";
             //Connection to database
             $_id = $_POST['id'];
             $_user_name = $_POST['name'];
@@ -144,11 +156,12 @@
                 $_SESSION['message'] = "User is not updated";
             }
             
-            header("location:index.php");
+            header("location:".$webroot."admin/users/index.php");
         }
 
         public function delete()
         {
+            $webroot = "http://localhost/php_project/";
             //Connection to database
             $_id = $_GET['id'];
             //Insert command
@@ -165,7 +178,7 @@
                 $_SESSION['message']="Failed to delete";
             }
 
-            header("location:index.php");
+            header("location:".$webroot."admin/users/index.php");
         }
 
         public function signUp()
@@ -269,6 +282,29 @@
             }
 
             header("location:".$webroot."admin/users/index2.php");
+        }
+
+        public function reject()
+        {
+            $webroot = "http://localhost/php_project/";
+            $_id = $_GET['id'];
+            $_is_rejected = 1;
+
+            $query = "UPDATE `users` SET `is_rejected`=:is_rejected WHERE `users`.id=:id";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(':id',$_id);
+            $stmt->bindParam(':is_rejected',$_is_rejected);
+            $result = $stmt->execute();
+            if($result)
+            {
+                $_SESSION['message'] = "Rejected Successfully";
+            }
+            else
+            {
+                $_SESSION['message'] = "Failed to reject";
+            }
+
+            header("location:".$webroot."admin/users/reject_index.php");
         }
     }
 ?>
